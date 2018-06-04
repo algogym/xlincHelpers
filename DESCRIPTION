@@ -1,0 +1,18 @@
+Package: xlincHelper
+Type: Package
+Title: A collection of convenience functions from the XLinC-Lab.
+Version: 0.1.0
+Author: Tim Graf
+Maintainer: Tim Graf <tim.graf@uni-koeln.de>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Suggests: testthat
+Imports: boot,
+    dplyr,
+    purrr,
+    fs,
+    readr
+RoxygenNote: 6.0.1
