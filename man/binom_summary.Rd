@@ -2,15 +2,23 @@
 % Please edit documentation in R/descriptives.R
 \name{binom_summary}
 \alias{binom_summary}
-\title{Title}
+\title{Summary statistics for binomial data}
 \usage{
 binom_summary(outcome)
 }
 \arguments{
-\item{outcome}{}
+\item{outcome}{A vector containing the outcome of a binomial response.
+The values have to be either logical (TRUE/FALSE) or zeros and ones, where TRUE and one mark a success.}
+}
+\value{
+a data.frame
 }
 \description{
-Title
+Function computes summary statistics for a binomial outcome variable.
+It computes the mean and the confidence intervals using the Agresti-Coull method.
+}
+\details{
+Agresti-Coull method: For a 95% confidence interval, this method does not use the concept of "adding 2 successes and 2 failures," but rather uses the formulas explicitly described in the following link: http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Agresti-Coull_Interval.
 }
 \examples{
 

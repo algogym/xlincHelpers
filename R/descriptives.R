@@ -44,12 +44,24 @@ bootstrapped_summary <- function(data, repeats = 1000){
 
 
 
-#' Title
+#' Summary statistics for binomial data
 #'
-#' @param outcome
+#' Function computes summary statistics for a binomial outcome variable.
+#' It computes the mean and the confidence intervals using the Agresti-Coull method.
 #'
-#' @return
+#'
+#'
+#' @param outcome A vector containing the outcome of a binomial response.
+#' The values have to be either logical (TRUE/FALSE) or zeros and ones, where TRUE and one mark a success.
+#'
+#' @details
+#'
+#' Agresti-Coull method: For a 95% confidence interval, this method does not use the concept of "adding 2 successes and 2 failures," but rather uses the formulas explicitly described in the following link: http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Agresti-Coull_Interval.
+#'
+#' @return a data.frame
 #' @export
+#'
+#'
 #'
 #' @examples
 #'
@@ -63,11 +75,17 @@ bootstrapped_summary <- function(data, repeats = 1000){
 #' do(binom_summary(.$outcome))
 
 binom_summary <- function(outcome){
+
+    outcome <- as.integer(outcome)
+
+    if(!(outcome %in% c(0L,1L))){stop("The outcome variable has to be either logical or zero/one")}
+
     trials <- length(outcome)
     sucesses <- sum(outcome)
     tibble::as.tibble(binom::binom.agresti.coull(sucesses, trials)) %>%
         dplyr::ungroup() %>%
-        dplyr::select(sucesses=x, trials = n, mean, lower, upper)
+        dplyr::select(x, n, mean, lower, upper) %>%
+        dplyr::rename(sucesses=x, trials = n)
 }
 
 

@@ -1,23 +1,38 @@
 #' Batch read files from a directory
 #'
-#' @param path
-#' @param files
-#' @param extension
-#' @param ...
+#' The function reads a batch of files within one directory and concatenates them into
+#' one data.frame (or equivalent structure). This is useful, when your data of each participant is
+#' stored in a separate file.
 #'
-#' @return
+#' @param path A character string indicating the path to the files to read
+#' @param files Usually, a vector of character strings with the names of the files to read in
+#' @param extension A character string for the file extension like csv, tsv. Only csv supported right now.
+#' @param reader_function The function to use for reading individual files
+#' @param ... Additional parameters for the reader function, like sep or dec
+#'
+#' @return A data frame (or equivalent structure) with the concatenated files
 #' @export
 #'
 #' @examples
-multiple_file_reader <- function(path=".", files, extension, ...){
+#'
+#' \dontrun{
+#'
+#' files_names <- letters[1:3]
+#'
+#' # Reads three files with .csv extension in the working directory using readr::read_csv
+#'
+#' my_data <- multiple_file_reader(file_names, ".csv", reader::read_csv)
+#'
+#'
+#' }
+
+multiple_file_reader <- function(files, extension, reader_function, path=".", ...){
+    extension = stringr::str_extract(extension, "\\w+")
    paths <- fs::path(fs::path_abs(path), files, ext=extension)
-   purrr::map_dfr(paths, readr::read_csv)
-   # TODO: add different readers for different types
-   # IDEA: Add support for base_r readers
+   purrr::map_dfr(paths, reader_function, ...)
 }
 
-
-#' model_writer
+#' Write a list of models to RDS files
 #'
 #' A function to save models from the list of models fitted with the fit_with()-function.
 #' The function saves one RDS file for each model to the provided path
@@ -27,14 +42,15 @@ multiple_file_reader <- function(path=".", files, extension, ...){
 #' @param save_path File destination for the RDS-files to be saved in
 #' @param prefix Custom Prefix to the file names.
 #'
-#' @return
+#' @return Nothing
 #'
 #' @export
 #'
 #' @examples
-#'
+#' \dontrun{
 #' models <- modelr::fit_with(mtcars, lm, "mpg ~ hp")
 #' model_writer(models)
+#' }
 #'
 
 model_writer <- function(model_container, save_path = "./", prefix = "" ){
