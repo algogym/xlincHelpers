@@ -27,9 +27,14 @@
 #' }
 
 multiple_file_reader <- function(files, extension, reader_function, path=".", ...){
-    extension = stringr::str_extract(extension, "\\w+")
+   extension = stringr::str_extract(extension, "\\w+")
+   add_file_name <- function(x,y, ...){
+    list(file = x, ...) %>%
+           do.call(what = reader_function, args = .) %>%
+           dplyr::mutate(filename = y)
+   }
    paths <- fs::path(fs::path_abs(path), files, ext=extension)
-   purrr::map_dfr(paths, reader_function, ...)
+   purrr::map2_dfr(paths,files, add_file_name)
 }
 
 #' Write a list of models to RDS files
@@ -63,3 +68,19 @@ model_writer <- function(model_container, save_path = "./", prefix = "" ){
     output_path <- stringr::str_glue(save_path, prefix, "{names(model_container)}",".rds")
     purrr::walk2(model_container, output_path, ~ saveRDS(.x, .y))
 }
+
+
+# multiple_big_file_reader <- function(files, extension, path=".", drop_cols=NULL, time_var, time_window){
+#     time_var <- enquo(time_var)
+#     require(magrittr)
+#     extension = stringr::str_extract(extension, "\\w+")
+#     paths <- fs::path(fs::path_abs(path), files, ext=extension)
+#     modified_fread <- function(x,y){
+#         data.table::fread(x, drop = drop_cols) %>%
+#             filter(!!time_var %in% time_window) %>%
+#             mutate(subject = y)
+#     }
+#     purrr::map2_dfr(paths,files,  modified_fread)
+# }
+
+
