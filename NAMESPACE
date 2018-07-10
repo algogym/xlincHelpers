@@ -2,6 +2,7 @@
 
 export(binom_summary)
 export(bootstrapped_summary)
+export(contr_forward)
 export(model_writer)
 export(multiple_file_reader)
 importFrom(dplyr,"%>%")
