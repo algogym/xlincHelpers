@@ -56,7 +56,7 @@ bootstrapped_summary <- function(data, repeats = 1000){
 #'
 #' @details
 #'
-#' Agresti-Coull method: For a 95% confidence interval, this method does not use the concept of "adding 2 successes and 2 failures," but rather uses the formulas explicitly described in the following link: http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Agresti-Coull_Interval.
+#' Agresti-Coull method: For a 95\% confidence interval, this method does not use the concept of "adding 2 successes and 2 failures," but rather uses the formulas explicitly described in the following link: http://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Agresti-Coull_Interval.
 #'
 #' @return a data.frame
 #' @export
