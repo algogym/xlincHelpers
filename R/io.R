@@ -29,8 +29,11 @@
 multiple_file_reader <- function(files, extension, reader_function, path=".", ...){
    extension = stringr::str_extract(extension, "\\w+")
    add_file_name <- function(x,y, ...){
-    list(file = x,
-         path = x, ...) %>%
+    reader_name <- as.character(rlang::get_expr(quo(reader_function)))
+    arguments <- ifelse(reader_name == "read_feather",
+                   list(path = x, ...),
+                   list(file = x, ...))
+    arguments %>%
            do.call(what = reader_function, args = .) %>%
            dplyr::mutate(filename = y)
    }
